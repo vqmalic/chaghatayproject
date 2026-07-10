@@ -11,9 +11,9 @@ class AlternateSpelling(models.Model):
 	latin_strict = models.CharField("Alternate Spelling in Verbatim Latin", max_length=500)
 
 class PartOfSpeech(models.Model):
-	abb = models.CharField("POS Abbreviation", max_length=50)	# e.g. N., V., Adj.
-	name = models.CharField("POS Full Name", max_length=200)	# e.g. noun, verb, adjective
-	description = models.TextField("POS Description")			# the usual, although useful for very specific Turkic grammar explanations
+	abb = models.CharField("POS Abbreviation", max_length=50, unique=True)	# e.g. N., V., Adj.
+	name = models.CharField("POS Full Name", max_length=200, unique=True)	# e.g. noun, verb, adjective
+	description = models.TextField("POS Description")						# the usual, although useful for very specific Turkic grammar explanations
 
 class Source(models.Model):
 	# this is just temporary, saving more complicated stuff for later
@@ -35,8 +35,8 @@ class UsageExample(models.Model):
 	source = models.ForeignKey(Source, on_delete=models.PROTECT)
 
 class Language(models.Model):
-	name = models.CharField("Language Name", max_length=200)		# e.g. Arabic, Old Turkic, Persian
-	iso_code = models.CharField("ISO 639-3 Code", max_length=3)		# e.g. ara, ota, pes
+	name = models.CharField("Language Name", max_length=200, unique=True)			# e.g. Arabic, Old Turkic, Persian
+	iso_code = models.CharField("ISO 639-3 Code", max_length=3, unique=True)		# e.g. ara, ota, pes
 
 class Etymology(models.Model):
 	# possibly implement sequence to record chronology
