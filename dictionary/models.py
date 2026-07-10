@@ -7,7 +7,8 @@ class Entry(models.Model):
 
 class AlternateSpelling(models.Model):
 	entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
-	alternate_spelling = models.CharField("Alternate Spelling", max_length=500)
+	persoarabic_alt = models.CharField("Alternate Spelling in Perso-Arabic", max_length=500)
+	latinstrict_alt = models.CharField("Alternate Spelling in Verbatim Latin", max_length=500)
 
 class PartOfSpeech(models.Model):
 	abb = models.CharField("POS Abbreviation", max_length=50)	# e.g. N., V., Adj.
@@ -20,12 +21,13 @@ class DefinitionSource(models.Model):
 class Definition(models.Model):
 	entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
 	pos = models.ForeignKey(PartOfSpeech, on_delete=models.CASCADE)
-	definition_text = models.TextField("Definition Text")
-	definition_source = models.ForeignKey(DefinitionSource, on_delete=models.CASCADE)
+	definition_text = models.TextField("Definition Text")									# e.g. "booty, plunder, spoils of war"
+	definition_source = models.ForeignKey(DefinitionSource, on_delete=models.CASCADE)		
 
 class UsageExample(models.Model):
 	definition = models.ForeignKey(Definition, on_delete=models.CASCADE) 
-	pass
+	persoarabic_usage = models.TextField("Usage Example in Perso-Arabic")
+	latinstrict_usage = models.TextField("Usage Example in Verbatim Latin")
 
 class Language(models.Model):
 	name = models.CharField("Language Name", max_length=200)		# e.g. Arabic, Old Turkic, Persian
