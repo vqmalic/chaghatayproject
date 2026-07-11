@@ -1,19 +1,76 @@
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
-class Entry(models.Model):
-	persoarabic = models.CharField("Perso-Arabic Headword", max_length=500)				# e.g. غنیمت
-	latin_strict = models.CharField("Verbatim Latin Transliteration", max_length=500)	# e.g. ġnymt
-	latin_phonetic = models.CharField("Phonetic Latin Transcription", max_length=500)	# e.g. ġanīmat
-
-class AlternateSpelling(models.Model):
-	entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
-	persoarabic = models.CharField("Alternate Spelling in Perso-Arabic", max_length=500)
-	latin_strict = models.CharField("Alternate Spelling in Verbatim Latin", max_length=500)
+# ---------------------------------------------------------------------------
+# Controlled vocabularies
+# ---------------------------------------------------------------------------
 
 class PartOfSpeech(models.Model):
 	abb = models.CharField("POS Abbreviation", max_length=50, unique=True)	# e.g. N., V., Adj.
 	name = models.CharField("POS Full Name", max_length=200, unique=True)	# e.g. noun, verb, adjective
 	description = models.TextField("POS Description")						# the usual, although useful for very specific Turkic grammar explanations
+	sort_order = models.IntegerField("POS Sort Order", default=0)			# for ordering in the UI
+
+	class Meta:
+		ordering = ["sort_order", "name"]
+		verbose_name_plural = "Parts of Speech"
+	
+	def __str__(self):
+		return self.name
+
+class Language(models.Model):
+	name = models.CharField("Language Name", max_length=200, unique=True)			# e.g. Arabic, Old Turkic, Persian
+	iso_code = models.CharField("ISO 639-3 Code", max_length=3, unique=True)		# e.g. ara, ota, pes
+
+	class Meta:
+		ordering = ["name"]
+
+	def __str__(self):
+		return self.name
+
+# ---------------------------------------------------------------------------
+# Notes - a generic entity that can be attached to multiple others
+# ---------------------------------------------------------------------------
+
+class Note(models.Model):
+	content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+	object_id = models.PositiveIntegerField()
+	content_object = GenericForeignKey('content_type', 'object_id')
+
+	text = models.TextField("Note Text")
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+
+	class Meta:
+		ordering = ["created_at"]
+		indexes = [models.Index(fields=['content_type', 'object_id'])]
+
+	def __str__(self):
+		return f"Note for {self.content_object} ({self.created_at})"
+
+# ---------------------------------------------------------------------------
+# Entry
+# ---------------------------------------------------------------------------
+
+class Entry(models.Model):
+	persoarabic = models.CharField(
+		"Perso-Arabic Headword", 
+		max_length=500,
+	) # e.g. غنیمت
+	latin_strict = models.CharField(
+		"Verbatim Latin Transliteration", 
+		max_length=500,
+	) # e.g. ġnymt
+	latin_phonetic = models.CharField(
+		"Phonetic Latin Transcription", 
+		max_length=500,
+	) # e.g. ġanīmat
+
+class AlternateSpelling(models.Model):
+	entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+	persoarabic = models.CharField("Alternate Spelling in Perso-Arabic", max_length=500)
+	latin_strict = models.CharField("Alternate Spelling in Verbatim Latin", max_length=500)
 
 class Source(models.Model):
 	# this is just temporary, saving more complicated stuff for later
@@ -34,9 +91,6 @@ class UsageExample(models.Model):
 	gloss = models.TextField("English Gloss of Usage Example", blank=True)
 	source = models.ForeignKey(Source, on_delete=models.PROTECT)
 
-class Language(models.Model):
-	name = models.CharField("Language Name", max_length=200, unique=True)			# e.g. Arabic, Old Turkic, Persian
-	iso_code = models.CharField("ISO 639-3 Code", max_length=3, unique=True)		# e.g. ara, ota, pes
 
 class Etymology(models.Model):
 	# possibly implement sequence to record chronology
