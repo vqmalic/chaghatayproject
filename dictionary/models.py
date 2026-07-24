@@ -73,6 +73,7 @@ class Entry(models.Model):
 	latin_phonetic = models.CharField(
 		"Phonetic Latin Transcription", 
 		max_length=500,
+		blank=True,
 		help_text=(
 			"The phonetic Latin transcription of the headword, "
 			"where inputters/editors can make informed decisions about the word's pronunciation."
@@ -101,12 +102,23 @@ class Entry(models.Model):
 			"It is used for search and sorting purposes."
 		)
 	) # e.g. ganimat
+	homograph_index = models.PositiveSmallIntegerField(
+    "Homograph Index",
+    null=True,
+    blank=True,
+    help_text=(
+			"Ordinal distinguishing this entry from other entries sharing the same "
+			"Perso-Arabic headword but representing a distinct, etymologically unrelated "
+			"word (e.g. 'ot' fire vs. 'ot' grass). Null when the headword has no homographs. "
+			"Auto-assigned on creation; editable via the sortable admin widget."
+    	)
+	)
 
 	notes = GenericRelation(Note)
 
 	class Meta:
 		verbose_name_plural = "Entries"
-		
+
 
 class AlternateSpelling(models.Model):
 	entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
@@ -126,28 +138,42 @@ class AlternateSpelling(models.Model):
 		)
 	)
 
-class Source(models.Model):
+class GenericSource(models.Model):
 	# this is just temporary, saving more complicated stuff for later
 	year = models.IntegerField("Year of Publication")
 	shortname = models.CharField("Source Short Name", max_length=200) # Just for the UI, so people can identify the source
 	identifier = models.CharField("Source Identifier", max_length=1000) # Unique identifiers, placeholder field, think ISBN, or NBN
 
+class DictionarySource(models.Model):
+	# this is just temporary, saving more complicated stuff for later
+	year = models.IntegerField("Year of Publication")
+	shortname = models.CharField("Source Short Name", max_length=200) # Just for the UI, so people can identify the source
+	identifier = models.CharField("Source Identifier", max_length=1000) # Unique identifiers, placeholder field, think ISBN, or NBN
+
+
 class Definition(models.Model):
 	entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
 	pos = models.ForeignKey(PartOfSpeech, on_delete=models.PROTECT)
-	definition_text = models.TextField("Definition Text")									# e.g. "booty, plunder, spoils of war"
-	source = models.ForeignKey(Source, on_delete=models.PROTECT, null=True, blank=True)		# optional, because some definitions are not sourced	
+	definition_text = models.TextField("Definition Text")												# e.g. "booty, plunder, spoils of war"
+	source = models.ForeignKey(DictionarySource, on_delete=models.SET_NULL, null=True, blank=True)		# optional, because some definitions are not sourced
+	
+	notes = GenericRelation(Note)
 
 class UsageExample(models.Model):
 	definition = models.ForeignKey(Definition, on_delete=models.CASCADE) 
 	persoarabic = models.TextField("Usage Example in Perso-Arabic")
 	latin_strict = models.TextField("Usage Example in Verbatim Latin")
 	gloss = models.TextField("English Gloss of Usage Example", blank=True)
-	source = models.ForeignKey(Source, on_delete=models.PROTECT)
+	source = models.ForeignKey(GenericSource, on_delete=models.PROTECT)
+	
+	notes = GenericRelation(Note)
 
 class Etymology(models.Model):
 	# possibly implement sequence to record chronology
 	entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
 	language = models.ForeignKey(Language, on_delete=models.PROTECT)	# e.g. from Arabic
 	word = models.CharField("Source Word", max_length=500)				# e.g. غَنِيمَة
+	notes = GenericRelation(Note)
 
+	class Meta:
+		verbose_name_plural = "Etymologies"
