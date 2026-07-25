@@ -103,21 +103,28 @@ class Entry(models.Model):
 		)
 	) # e.g. ganimat
 	homograph_index = models.PositiveSmallIntegerField(
-    "Homograph Index",
-    null=True,
-    blank=True,
-    help_text=(
+	"Homograph Index",
+	null=True,
+	blank=True,
+	help_text=(
 			"Ordinal distinguishing this entry from other entries sharing the same "
 			"Perso-Arabic headword but representing a distinct, etymologically unrelated "
 			"word (e.g. 'ot' fire vs. 'ot' grass). Null when the headword has no homographs. "
 			"Auto-assigned on creation; editable via the sortable admin widget."
-    	)
+		)
 	)
 
 	notes = GenericRelation(Note)
 
 	class Meta:
 		verbose_name_plural = "Entries"
+		constraints = [
+			models.UniqueConstraint(
+				fields=['persoarabic', 'homograph_index'],
+				name='unique_homograph_index',
+				deferrable=models.Deferrable.DEFERRED,
+			)
+		]
 
 
 class AlternateSpelling(models.Model):
