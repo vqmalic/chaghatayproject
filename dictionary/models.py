@@ -145,18 +145,21 @@ class AlternateSpelling(models.Model):
 		)
 	)
 
-class GenericSource(models.Model):
-	# this is just temporary, saving more complicated stuff for later
+class SourceBase(models.Model):
 	year = models.IntegerField("Year of Publication")
 	shortname = models.CharField("Source Short Name", max_length=200) # Just for the UI, so people can identify the source
 	identifier = models.CharField("Source Identifier", max_length=1000) # Unique identifiers, placeholder field, think ISBN, or NBN
 
-class DictionarySource(models.Model):
-	# this is just temporary, saving more complicated stuff for later
-	year = models.IntegerField("Year of Publication")
-	shortname = models.CharField("Source Short Name", max_length=200) # Just for the UI, so people can identify the source
-	identifier = models.CharField("Source Identifier", max_length=1000) # Unique identifiers, placeholder field, think ISBN, or NBN
+	class Meta:
+		abstract = True
 
+class GenericSource(SourceBase):
+	# to elaborate as use cases come in
+	pass
+
+class DictionarySource(SourceBase):
+	# to elaborate as use cases come in
+	pass
 
 class Definition(models.Model):
 	entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
@@ -178,9 +181,11 @@ class UsageExample(models.Model):
 class Etymology(models.Model):
 	# possibly implement sequence to record chronology
 	entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
-	language = models.ForeignKey(Language, on_delete=models.PROTECT)	# e.g. from Arabic
-	word = models.CharField("Source Word", max_length=500)				# e.g. غَنِيمَة
+	sequence = models.PositiveSmallIntegerField("Chain Order", default=1) 	# e.g. 1 for the first language in the etymological chain, 2 for the second, etc.
+	language = models.ForeignKey(Language, on_delete=models.PROTECT)		# e.g. from Arabic
+	word = models.CharField("Source Word", max_length=500)					# e.g. غَنِيمَة
 	notes = GenericRelation(Note)
 
 	class Meta:
 		verbose_name_plural = "Etymologies"
+		ordering = ['entry', 'sequence']
