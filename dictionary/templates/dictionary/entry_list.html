@@ -4,7 +4,7 @@
 <ul class="entry-list">
     {% for entry in entries %}
     <li>
-        <a href="#">{{ entry.latin_strict }}</a>
+        <a href="{% url 'entry_detail' entry.pk %}">{{ entry.latin_strict }}</a>
         {% if entry.homograph_index %}<sup>{{ entry.homograph_index }}</sup>{% endif %}
         — {{ entry.persoarabic }}
     </li>
