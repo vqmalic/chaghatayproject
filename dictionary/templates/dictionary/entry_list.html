@@ -1,0 +1,21 @@
+{% extends 'dictionary/base.html' %}
+
+{% block content %}
+<ul class="entry-list">
+    {% for entry in entries %}
+    <li>
+        <a href="#">{{ entry.latin_strict }}</a>
+        {% if entry.homograph_index %}<sup>{{ entry.homograph_index }}</sup>{% endif %}
+        — {{ entry.persoarabic }}
+    </li>
+    {% endfor %}
+</ul>
+
+{% if is_paginated %}
+<nav>
+    {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}">Previous</a>{% endif %}
+    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}">Next</a>{% endif %}
+</nav>
+{% endif %}
+{% endblock %}

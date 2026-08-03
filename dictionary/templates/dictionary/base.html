@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Chaghatay Dictionary{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'dictionary/css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1><a href="{% url 'entry_list' %}">Chaghatay Dictionary</a></h1>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
