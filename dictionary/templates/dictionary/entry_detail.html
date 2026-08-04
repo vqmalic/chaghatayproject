@@ -1,0 +1,49 @@
+{% extends 'dictionary/base.html' %}
+
+{% block title %}{{ entry.latin_strict }} — Chaghatay Dictionary{% endblock %}
+
+{% block content %}
+<article class="entry-detail">
+    <h2>
+        {{ entry.latin_strict }}{% if entry.homograph_index %}<sup>{{ entry.homograph_index }}</sup>{% endif %}
+        <span class="persoarabic" dir="rtl">{{ entry.persoarabic }}</span>
+    </h2>
+
+    {% if entry.latin_phonetic %}
+    <p class="phonetic">/{{ entry.latin_phonetic }}/</p>
+    {% endif %}
+
+    <section class="definitions">
+        {% for definition in entry.definition_set.all %}
+        <div class="definition-block">
+            <p class="pos">{{ definition.pos }}</p>
+            <p class="gloss">{{ definition.definition_text }}</p>
+
+            {% if definition.source %}
+            <p class="source">Source: {{ definition.source }}</p>
+            {% endif %}
+
+            {% for example in definition.usageexample_set.all %}
+            <div class="usage-example">
+                <p class="persoarabic" dir="rtl">{{ example.persoarabic }}</p>
+                <p class="latin">{{ example.latin_strict }}</p>
+                <p class="gloss">{{ example.gloss }}</p>
+                <p class="source">— {{ example.source }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </section>
+
+    {% if entry.etymology_set.all %}
+    <section class="etymology">
+        <h3>Etymology</h3>
+        <ol>
+            {% for step in entry.etymology_set.all %}
+            <li>{{ step.language }}: {{ step.word }}</li>
+            {% endfor %}
+        </ol>
+    </section>
+    {% endif %}
+</article>
+{% endblock %}
