@@ -4,6 +4,9 @@ from django.contrib.postgres.indexes import GinIndex
 from django.db import models
 from django.db.models import F, Func, Value
 
+from itertools import groupby
+from operator import attrgetter
+
 from .utils import diacritic_strip_sql_args
 
 from_chars, to_chars = diacritic_strip_sql_args()
@@ -132,6 +135,16 @@ class Entry(models.Model):
 	def __str__(self):
 		return f"{self.persoarabic} ({self.latin_strict})"
 
+	def grouped_definitions(self):
+		'''
+		Groups this entry's definitions by part of speech for display.
+		'''
+		defs = self.definition_set.select_related('pos', 'source').order_by('pos__sort_order', 'id')
+		return [
+			{'pos': pos, 'definitions': list(defs_iter)}
+			for pos, defs_iter in groupby(defs, key=attrgetter('pos'))
+		]
+
 	class Meta:
 		verbose_name_plural = "Entries"
 		constraints = [
@@ -168,7 +181,6 @@ class Entry(models.Model):
 				opclasses=['gin_trgm_ops'],
 			),
 		]
-
 
 class AlternateSpelling(models.Model):
 	entry = models.ForeignKey(Entry, on_delete=models.CASCADE)

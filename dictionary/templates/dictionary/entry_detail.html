@@ -5,35 +5,40 @@
 {% block content %}
 <article class="entry-detail">
     <h2>
-        {{ entry.latin_strict }}{% if entry.homograph_index %}<sup>{{ entry.homograph_index }}</sup>{% endif %}
-        <span class="persoarabic" dir="rtl">{{ entry.persoarabic }}</span>
+        <span class="persoarabic" dir="rtl">{{ entry.persoarabic }} {% if entry.homograph_index %}<sup>{{ entry.homograph_index }}</sup>{% endif %}</span>
     </h2>
 
+    <p class="strict">Verbatim Latin: {{ entry.latin_strict }}</p>
     {% if entry.latin_phonetic %}
-    <p class="phonetic">/{{ entry.latin_phonetic }}/</p>
+    <p class="phonetic">Phonetic Latin: {{ entry.latin_phonetic }}</p>
     {% endif %}
 
-    <section class="definitions">
-        {% for definition in entry.definition_set.all %}
-        <div class="definition-block">
-            <p class="pos">{{ definition.pos }}</p>
-            <p class="gloss">{{ definition.definition_text }}</p>
-
-            {% if definition.source %}
-            <p class="source">Source: {{ definition.source }}</p>
-            {% endif %}
-
-            {% for example in definition.usageexample_set.all %}
-            <div class="usage-example">
-                <p class="persoarabic" dir="rtl">{{ example.persoarabic }}</p>
-                <p class="latin">{{ example.latin_strict }}</p>
-                <p class="gloss">{{ example.gloss }}</p>
-                <p class="source">— {{ example.source }}</p>
-            </div>
+    {% if entry.alternatespelling_set.all %}
+    <section class="alternatespellings">
+        <h3>Alternate Spellings</h3>
+        <ul>
+            {% for spelling in entry.alternatespelling_set.all %}
+            <li>{{ spelling.persoarabic }}, {{ spelling.latin_strict }}</li>
             {% endfor %}
-        </div>
-        {% endfor %}
+        </ul>
     </section>
+    {% endif %}
+
+    {% for group in entry.grouped_definitions %}
+    <div class="pos-group">
+        <h4 class="pos-label">{{ group.pos }}</h4>
+        <ol class="definition-list">
+        {% for def in group.definitions %}
+            <li>
+            {{ def.definition_text }}
+            {% if def.source %}
+                <span class="def-source">({{ def.source.shortname }})</span>
+            {% endif %}
+            </li>
+        {% endfor %}
+        </ol>
+    </div>
+    {% endfor %}
 
     {% if entry.etymology_set.all %}
     <section class="etymology">
