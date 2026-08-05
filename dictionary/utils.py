@@ -9,6 +9,45 @@ Assumes all VLT/PLT/stripped fields are lowercase-only (enforced at the
 model/DB layer) — no uppercase variants are included here.
 """
 
+PA_TO_VLT = {
+    'آ': "ā",
+    'ا': "a",
+    'ب': "b",
+    'ت': "t",
+    'ث': "ş",
+    'ج': "j",
+    'ح': "ḥ",
+    'خ': "ḫ",
+    'د': "d",
+    'ذ': "ź",
+    'ر': "r",
+    'ز': "z",
+    'س': "s",
+    'ش': "š",
+    'ص': "ṣ",
+    'ض': "ż",
+    'ط': "ṭ",
+    'ظ': "ẓ",
+    'ع': "ʿ",
+    'غ': "ǧ",
+    'ف': "f",
+    'ق': "q",
+    'ل': "l",
+    'م': "m",
+    'ن': "n",
+    'ه': "h",
+    'و': "w",
+    'ُ': "u",
+    'ّ': "~",
+    'پ': "p",
+    'چ': "č",
+    'ژ': "ž",
+    'ک': "k",
+    'گ': "g",
+    'ی': "y",
+    'ە': "h",
+}
+
 DIACRITIC_STRIP_MAP = {
     "ä": "a",
     "ö": "o",
@@ -39,6 +78,18 @@ def strip_diacritics(text: str) -> str:
     (e.g. one-off scripts, tests, shell/admin logic).
     """
     return text.translate(str.maketrans(DIACRITIC_STRIP_MAP))
+
+def to_vlt(persoarabic: str) -> str:
+    """
+    Convert a Perso-Arabic string to VLT.
+    """
+    return persoarabic.translate(str.maketrans(PA_TO_VLT))
+
+def to_ps(vlt: str) -> str:
+    """
+    Convert a VLT string to Perso-Arabic.
+    """
+    return vlt.translate(str.maketrans({v: k for k, v in PA_TO_VLT.items()}))
 
 
 def diacritic_strip_sql_args() -> tuple[str, str]:
