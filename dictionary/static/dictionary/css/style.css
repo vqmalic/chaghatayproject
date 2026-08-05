@@ -1,0 +1,5 @@
+.persoarabic {
+  font-family: 'Noto Naskh Arabic', serif;
+  direction: rtl;
+  font-size: 1.2em; /* Arabic script often needs slightly larger size to read as comparably weighted to Latin at the same pixel size */
+}

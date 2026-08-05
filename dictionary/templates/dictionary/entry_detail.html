@@ -30,10 +30,21 @@
         <ol class="definition-list">
         {% for def in group.definitions %}
             <li>
-            {{ def.definition_text }}
+            {{ def.definition_text | safe}}
             {% if def.source %}
                 <span class="def-source">({{ def.source.shortname }})</span>
             {% endif %}
+                {% if def.usageexample_set.all %}
+                <ul>
+                    {% for example in def.usageexample_set.all %}
+                        <li>
+                            <div class="persoarabic" dir="rtl">{{ example.persoarabic | safe }}</div>
+                            <div class="latin-strict">{{ example.latin_strict | safe}}</div>
+                            <div class="gloss">{{ example.gloss | safe}}</div>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </li>
         {% endfor %}
         </ol>
@@ -45,7 +56,11 @@
         <h3>Etymology</h3>
         <ol>
             {% for step in entry.etymology_set.all %}
-            <li>{{ step.language }}: {{ step.word }}</li>
+                {% if step.language.name == "Arabic" or step.language.name == "Persian" %}
+                    <li>{{ step.language }}: <span class="persoarabic" dir="rtl">{{ step.word }}</span></li>
+                {% else %}
+                    <li>{{ step.language }}: {{ step.word }}</li>
+                {% endif %}
             {% endfor %}
         </ol>
     </section>
