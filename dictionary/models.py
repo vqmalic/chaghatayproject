@@ -261,8 +261,20 @@ class Definition(models.Model):
 	pos = models.ForeignKey(PartOfSpeech, on_delete=models.PROTECT)
 	definition_text = models.TextField("Definition Text")									# e.g. "booty, plunder, spoils of war"
 	source = models.ForeignKey(DictionarySource, on_delete=models.SET_NULL, null=True, blank=True)		# optional, because some definitions are not sourced
-	
+	sequence = models.PositiveSmallIntegerField(default=0, blank=True)	# e.g. 1 for the first definition, 2 for the second, etc.
+
 	notes = GenericRelation(Note)
+
+	class Meta:
+		ordering = ['entry', 'pos__sort_order', 'sequence']
+
+	def save(self, *args, **kwargs):
+		if self.sequence == 0:
+			last = Definition.objects.filter(
+				entry=self.entry, pos=self.pos
+			).aggregate(models.Max('sequence'))['sequence__max']
+			self.sequence = (last or 0) + 1
+		super().save(*args, **kwargs)
 
 	def __str__(self):
 		return f"{self.entry.persoarabic} ({self.pos.abb}): {self.definition_text[:50]}..."
