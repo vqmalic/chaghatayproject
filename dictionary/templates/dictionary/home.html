@@ -1,0 +1,15 @@
+{% extends 'dictionary/base.html' %}
+{% load static %}
+
+{% block title %}Chaghatay Dictionary{% endblock %}
+
+{% block content %}
+<div class="search-container">
+    <input type="text" id="search-box" autocomplete="off" placeholder="Search...">
+    <div id="suggestions"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'dictionary/search.js' %}"></script>
+{% endblock %}

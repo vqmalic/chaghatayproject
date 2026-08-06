@@ -11,10 +11,11 @@
 </head>
 <body>
     <header>
-        <h1><a href="{% url 'entry_list' %}">Chaghatay Dictionary</a></h1>
+        <h1><a href="{% url 'home' %}">Chaghatay Dictionary</a></h1>
     </header>
     <main>
         {% block content %}{% endblock %}
     </main>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

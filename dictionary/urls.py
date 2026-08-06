@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import EntryListView, EntryDetailView
+from dictionary import views
 
 urlpatterns = [
-    path('', EntryListView.as_view(), name='entry_list'),
-    path('entry/<int:pk>/', EntryDetailView.as_view(), name='entry_detail'),
+    path('entry/<int:pk>/', views.EntryDetailView.as_view(), name='entry_detail'),
+    path('', views.home, name='home'),
+    path('api/search/', views.search_suggestions, name='search_suggestions'),
 ]
