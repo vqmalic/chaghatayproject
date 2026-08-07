@@ -1,10 +1,10 @@
 import re
-from django.db.models import F, Q, Case, When, Value, OuterRef, Subquery
-from django.db.models.functions import Greatest, Coalesce
+from django.db.models import F, Q, Case, When, Value, OuterRef, Subquery, IntegerField
+from django.db.models.functions import Greatest, Coalesce, Length
 from django.db.models.fields import FloatField
 from django.contrib.postgres.search import TrigramSimilarity
 
-from .models import Entry, AlternateSpelling
+from .models import Entry, AlternateSpelling, Definition
 from .utils import strip_diacritics
 
 ARABIC_SCRIPT_RE = re.compile(r'[\u0600-\u06FF]')
@@ -13,8 +13,30 @@ def looks_like_persoarabic(query: str) -> bool:
     return bool(ARABIC_SCRIPT_RE.search(query))
 
 
+def search_entries_by_definition(query: str, limit: int = 10):
+    """English-to-Chaghatay: match against Definition.definition_text via
+    icontains, then rank parent Entry rows by their shortest matching
+    definition (a cheap proxy for closeness, since icontains gives no
+    similarity score to rank on)."""
+    best_match_len = (
+        Definition.objects
+        .filter(entry=OuterRef('pk'), definition_text__icontains=query)
+        .annotate(match_len=Length('definition_text'))
+        .order_by('match_len')
+        .values('match_len')[:1]
+    )
 
-def search_entries(query: str, limit: int = 10):
+    qs = Entry.objects.annotate(
+        match_len=Subquery(best_match_len, output_field=IntegerField()),
+    ).filter(match_len__isnull=False).order_by('match_len')
+
+    return qs[:limit]
+
+
+def search_entries(query: str, limit: int = 10, mode: str = 'chag_to_eng'):
+    if mode == 'eng_to_chag':
+        return search_entries_by_definition(query, limit)
+
     if looks_like_persoarabic(query):
         # correlated subquery: does this entry have ANY alt spelling
         # matching the query? (existence only — no ranking needed here,

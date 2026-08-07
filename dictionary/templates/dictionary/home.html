@@ -6,6 +6,10 @@
 {% block content %}
 <div class="search-container">
     <input type="text" id="search-box" autocomplete="off" placeholder="Search...">
+    <div class="search-mode-toggle">
+        <label><input type="radio" name="search-mode" value="chag_to_eng" checked> Chaghatay → English</label>
+        <label><input type="radio" name="search-mode" value="eng_to_chag"> English → Chaghatay</label>
+    </div>
     <div id="suggestions"></div>
 </div>
 {% endblock %}

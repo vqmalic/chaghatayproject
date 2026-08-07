@@ -1,8 +1,13 @@
 const searchBox = document.getElementById('search-box');
 const suggestionsBox = document.getElementById('suggestions');
+const modeRadios = document.querySelectorAll('input[name="search-mode"]');
 
 let debounceTimer = null;
 let latestRequestId = 0;
+
+function getMode() {
+    return document.querySelector('input[name="search-mode"]:checked').value;
+}
 
 searchBox.addEventListener('input', () => {
     const query = searchBox.value.trim();
@@ -16,17 +21,32 @@ searchBox.addEventListener('input', () => {
     }
 
     debounceTimer = setTimeout(() => {
-        fetchSuggestions(query);
+        fetchSuggestions(query, getMode());
     }, 180);
 });
 
-async function fetchSuggestions(query) {
+searchBox.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+
+    const query = searchBox.value.trim();
+    if (!query) return;
+
+    window.location.href = `/search/?q=${encodeURIComponent(query)}&mode=${getMode()}`;
+});
+
+modeRadios.forEach(radio => {
+    radio.addEventListener('change', () => {
+        const query = searchBox.value.trim();
+        if (query) fetchSuggestions(query, getMode());
+    });
+});
+
+async function fetchSuggestions(query, mode) {
     const requestId = ++latestRequestId;
 
-    const response = await fetch(`/api/search/?q=${encodeURIComponent(query)}`);
+    const response = await fetch(`/api/search/?q=${encodeURIComponent(query)}&mode=${mode}`);
     const data = await response.json();
 
-    // if a newer request has since been fired, discard this stale response
     if (requestId !== latestRequestId) return;
 
     renderSuggestions(data.results);
@@ -56,7 +76,6 @@ function renderSuggestions(results) {
     });
 }
 
-// hide dropdown when clicking elsewhere
 document.addEventListener('click', (e) => {
     if (!e.target.closest('.search-container')) {
         suggestionsBox.style.display = 'none';

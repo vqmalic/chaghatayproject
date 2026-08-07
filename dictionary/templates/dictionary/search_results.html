@@ -1,0 +1,31 @@
+{% extends 'dictionary/base.html' %}
+
+{% block title %}Search: {{ query }}{% endblock %}
+
+{% block content %}
+<h1>Results for "{{ query }}"</h1>
+
+<div class="search-mode-label">
+    {% if mode == 'eng_to_chag' %}Searching English → Chaghatay{% else %}Searching Chaghatay → English{% endif %}
+</div>
+
+{% if entries %}
+<div class="results-list">
+    {% for entry in entries %}
+    <a href="{% url 'entry_detail' entry.pk %}" class="result-item">
+        <div class="result-persoarabic persoarabic">{{ entry.persoarabic }}</div>
+        <div class="result-latin">
+            {{ entry.latin_strict }}{% if entry.latin_phonetic %} ({{ entry.latin_phonetic }}){% endif %}
+        </div>
+        <div class="result-definitions">
+            {% for def in entry.definition_set.all %}
+                <p>{{ def.definition_text }}</p>
+            {% endfor %}
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<p>No results found.</p>
+{% endif %}
+{% endblock %}
