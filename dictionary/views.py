@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from .models import Entry
 from .search import search_entries
 
@@ -49,6 +49,12 @@ def search_results(request):
         'mode': mode,
         'entries': entries,
     })
+
+class AboutView(TemplateView):
+    template_name = 'dictionary/about.html'
+
+class HelpView(TemplateView):
+    template_name = 'dictionary/help.html'
 
 class EntryListView(ListView):
     model = Entry

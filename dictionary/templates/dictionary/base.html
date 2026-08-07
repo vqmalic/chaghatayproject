@@ -13,6 +13,11 @@
     <header>
         <h1><a href="{% url 'home' %}">Chaghatay Dictionary</a></h1>
     </header>
+    <nav>
+        <a href="{% url 'home' %}">Search</a>
+        <a href="{% url 'help' %}">Help</a>
+        <a href="{% url 'about' %}">About</a>
+    </nav>
     <main>
         {% block content %}{% endblock %}
     </main>
