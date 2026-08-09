@@ -1,7 +1,31 @@
+body {
+    font-family: "Source Serif 4", Georgia, "Times New Roman", Times, serif;
+    line-height: 1.6rem;
+}
+sup {
+  vertical-align: baseline;   /* cancel the default shift-based positioning */
+  position: relative;
+  top: -0.5em;                /* visually raise it instead */
+  font-size: 0.75em;
+  line-height: 0;              /* prevents its own box from adding vertical space */
+}
 .persoarabic {
   font-family: 'Noto Naskh Arabic', serif;
   direction: rtl;
   font-size: 1.2em; /* Arabic script often needs slightly larger size to read as comparably weighted to Latin at the same pixel size */
+}
+p .persoarabic {
+  font-size: 1em; /* Reset to normal size for inline text */
+}
+.nastaliq {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: 1.4em;
+}
+.entry_detail h2{
+    margin-bottom: 0;
+}
+.entry-detail .latinstrict{
+    padding-left: 1rem;
 }
 header {
     text-align: center;
@@ -47,4 +71,76 @@ header {
 .suggestion-snippet {
     font-size: 0.85rem;
     color: #666;
+}
+.site-nav {
+    border-bottom: 1px solid #ccc;
+}
+
+.nav-inner{
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1.5rem;
+}
+
+.nav-logo img {
+    height: 40px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+    margin-left: 2rem;
+    padding: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.home-header{
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 2rem;
+}
+div.resultblock{
+    border-bottom: 1px solid #ccc;
+}
+.search-mode-toggle{
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.results-list {
+    border-top: 1px solid #ccc;
+}
+
+.resultblock {
+    padding: 1rem 0.5rem;
+}
+
+.resultblock ul {
+    margin: 0;
+}
+
+.result-block-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.result-block-link:hover, .result-block-link:focus-visible {
+    background-color: var(--color-hover, #f0f0f0);
+    cursor: pointer;
+}
+
+.result-block-link:focus-visible{
+    outline: 2px solid var(--color-accent);
 }

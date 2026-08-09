@@ -12,15 +12,21 @@
 {% if entries %}
 <div class="results-list">
     {% for entry in entries %}
-    <a href="{% url 'entry_detail' entry.pk %}" class="result-item">
-        <div class="result-persoarabic persoarabic">{{ entry.persoarabic }}</div>
-        <div class="result-latin">
-            {{ entry.latin_strict }}{% if entry.latin_phonetic %} ({{ entry.latin_phonetic }}){% endif %}
-        </div>
-        <div class="result-definitions">
-            {% for def in entry.definition_set.all %}
-                <p>{{ def.definition_text }}</p>
-            {% endfor %}
+    <a href="{% url 'entry_detail' entry.pk %}" class="result-block-link">
+        <div class="resultblock">
+                <div>
+                    <span class="result-persoarabic persoarabic">{{ entry.persoarabic }}</span>
+                    <span class="result-latin">
+                        {{ entry.latin_strict }}{% if entry.latin_phonetic %} ({{ entry.latin_phonetic }}){% endif %}
+                    </span>
+                </div>
+            <div class="result-definitions">
+                <ul>
+                {% for def in entry.definition_set.all %}
+                    <li>{{ def.definition_text | safe}}</li>
+                {% endfor %}
+                </ul>
+            </div>
         </div>
     </a>
     {% endfor %}
