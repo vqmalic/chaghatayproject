@@ -2,23 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Chaghatay Dictionary{% endblock %}</title>
+    <title>{% block title %}Chaghatay Dictionary Project{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'dictionary/css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400..700&family=Noto+Nastaliq+Urdu:wght@400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400..700&family=Noto+Nastaliq+Urdu:wght@400..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1><a href="{% url 'home' %}">Chaghatay Dictionary</a></h1>
-    </header>
-    <nav>
-        <a href="{% url 'home' %}">Search</a>
-        <a href="{% url 'help' %}">Help</a>
-        <a href="{% url 'about' %}">About</a>
+    <nav class="site-nav">
+        <div class="container nav-inner">
+            <a href="{% url 'home' %}" class="nav-logo">
+                <img src="{% static 'dictionary/img/cdp_logo.png' %}" alt="Chaghatay Project">
+            </a>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Search</a></li>
+                <li><a href="{% url 'help' %}">Help</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+            </ul>
+        </div>
     </nav>
-    <main>
+    <main class="container">
         {% block content %}{% endblock %}
     </main>
     {% block extra_js %}{% endblock %}
