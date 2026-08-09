@@ -6,19 +6,22 @@
 <article class="entry-detail">
     <h2>
         <span class="persoarabic" dir="rtl">{{ entry.persoarabic }} {% if entry.homograph_index %}<sup>{{ entry.homograph_index }}</sup>{% endif %}</span>
+        <span class="latinstrict">({{ entry.latin_strict }})</span>
     </h2>
 
-    <p class="strict">Verbatim Latin: {{ entry.latin_strict }}</p>
     {% if entry.latin_phonetic %}
-    <p class="phonetic">Phonetic Latin: {{ entry.latin_phonetic }}</p>
+    <div class="phonetic">Phonetic Reconstruction: {{ entry.latin_phonetic }}</div>
     {% endif %}
+    <div>
+        <span>Nastaliq: </span><span class="nastaliq">{{ entry.persoarabic }}</span>
+    </div>
 
     {% if entry.alternatespelling_set.all %}
     <section class="alternatespellings">
         <h3>Alternate Spellings</h3>
         <ul>
             {% for spelling in entry.alternatespelling_set.all %}
-            <li>{{ spelling.persoarabic }}, {{ spelling.latin_strict }}</li>
+            <li><span class="persoarabic" dir="rtl">{{ spelling.persoarabic }}</span>, <span>{{ spelling.latin_strict }}</span></li>
             {% endfor %}
         </ul>
     </section>
