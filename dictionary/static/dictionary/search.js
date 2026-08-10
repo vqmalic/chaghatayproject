@@ -4,6 +4,8 @@ const modeRadios = document.querySelectorAll('input[name="search-mode"]');
 
 let debounceTimer = null;
 let latestRequestId = 0;
+let highlightedIndex = -1;
+let currentResults = []; // keep the raw result data around so Enter/click can navigate
 
 function getMode() {
     return document.querySelector('input[name="search-mode"]:checked').value;
@@ -17,6 +19,8 @@ searchBox.addEventListener('input', () => {
     if (!query) {
         suggestionsBox.style.display = 'none';
         suggestionsBox.innerHTML = '';
+        currentResults = [];
+        highlightedIndex = -1;
         return;
     }
 
@@ -26,13 +30,55 @@ searchBox.addEventListener('input', () => {
 });
 
 searchBox.addEventListener('keydown', (e) => {
+    const items = suggestionsBox.querySelectorAll('.suggestion-item');
+    const dropdownOpen = suggestionsBox.style.display === 'block' && items.length > 0;
+
+    if (e.key === 'ArrowDown') {
+        if (!dropdownOpen) return;
+        e.preventDefault(); // stop the cursor from jumping to the end of the input
+        highlightedIndex = (highlightedIndex + 1) % items.length;
+        updateHighlight(items);
+        return;
+    }
+
+    if (e.key === 'ArrowUp') {
+        if (!dropdownOpen) return;
+        e.preventDefault();
+        highlightedIndex = (highlightedIndex - 1 + items.length) % items.length;
+        updateHighlight(items);
+        return;
+    }
+
+    if (e.key === 'Escape') {
+        suggestionsBox.style.display = 'none';
+        highlightedIndex = -1;
+        return;
+    }
+
     if (e.key !== 'Enter') return;
+
+    // If a suggestion is highlighted, Enter selects it instead of submitting raw text
+    if (dropdownOpen && highlightedIndex >= 0 && currentResults[highlightedIndex]) {
+        window.location.href = `/entry/${currentResults[highlightedIndex].id}/`;
+        return;
+    }
 
     const query = searchBox.value.trim();
     if (!query) return;
 
     window.location.href = `/search/?q=${encodeURIComponent(query)}&mode=${getMode()}`;
 });
+
+function updateHighlight(items) {
+    items.forEach((item, i) => {
+        item.classList.toggle('highlighted', i === highlightedIndex);
+    });
+
+    // keep the highlighted item visible if the list scrolls
+    if (highlightedIndex >= 0) {
+        items[highlightedIndex].scrollIntoView({ block: 'nearest' });
+    }
+}
 
 modeRadios.forEach(radio => {
     radio.addEventListener('change', () => {
@@ -53,6 +99,9 @@ async function fetchSuggestions(query, mode) {
 }
 
 function renderSuggestions(results) {
+    currentResults = results;
+    highlightedIndex = -1; // reset on every new result set
+
     if (results.length === 0) {
         suggestionsBox.style.display = 'none';
         suggestionsBox.innerHTML = '';
@@ -69,9 +118,14 @@ function renderSuggestions(results) {
 
     suggestionsBox.style.display = 'block';
 
-    document.querySelectorAll('.suggestion-item').forEach(item => {
+    const items = document.querySelectorAll('.suggestion-item');
+    items.forEach((item, i) => {
         item.addEventListener('click', () => {
             window.location.href = `/entry/${item.dataset.id}/`;
+        });
+        item.addEventListener('mouseenter', () => {
+            highlightedIndex = i;
+            updateHighlight(items);
         });
     });
 }
