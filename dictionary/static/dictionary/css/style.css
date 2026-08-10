@@ -2,6 +2,16 @@ body {
     font-family: "Source Serif 4", Georgia, "Times New Roman", Times, serif;
     line-height: 1.6rem;
 }
+a {
+    color: #4b3f8f;
+    text-decoration: none;
+    transition: text-decoration-color 0.15s ease;
+}
+a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+}
 sup {
   vertical-align: baseline;   /* cancel the default shift-based positioning */
   position: relative;
@@ -20,12 +30,18 @@ p .persoarabic {
 .nastaliq {
   font-family: 'Noto Nastaliq Urdu', serif;
   font-size: 1.4em;
+  line-height: normal;
 }
 .entry_detail h2{
     margin-bottom: 0;
 }
-.entry-detail .latinstrict{
-    padding-left: 1rem;
+.entry-detail h2 .latin-strict{
+    padding-left: 0.5rem;
+    color: #AAAAAA;
+}
+.entry-detail .latin-phonetic {
+    font-weight: bold;
+    font-size: 1.2em;
 }
 header {
     text-align: center;
@@ -100,7 +116,7 @@ header {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 0 1.5rem;
 }
@@ -133,14 +149,40 @@ div.resultblock{
 .result-block-link {
     display: block;
     text-decoration: none;
-    color: inherit;
 }
 
 .result-block-link:hover, .result-block-link:focus-visible {
     background-color: var(--color-hover, #f0f0f0);
     cursor: pointer;
+    text-decoration: none;
+}
+
+.result-persoarabic, .result-latin-phonetic {
+    font-weight: bold;
+}
+
+.result-latin-verbatim {
+    font-size: .8em;
+}
+
+.result-latin-strict {
+    color: #7B759D;
+}
+
+.result-block-link:hover .result-persoarabic,
+.result-block-link:hover .result-latin-strict,
+.result-block-link:hover .result-latin-phonetic {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
 }
 
 .result-block-link:focus-visible{
     outline: 2px solid var(--color-accent);
 }
+
+.resultblock .result-definitions, .resultblock .result-definitions:hover {
+    color: #000000;
+    text-decoration: none;
+}
+

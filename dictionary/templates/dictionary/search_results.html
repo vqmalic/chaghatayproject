@@ -16,9 +16,14 @@
         <div class="resultblock">
                 <div>
                     <span class="result-persoarabic persoarabic">{{ entry.persoarabic }}</span>
-                    <span class="result-latin">
-                        {{ entry.latin_strict }}{% if entry.latin_phonetic %} ({{ entry.latin_phonetic }}){% endif %}
+                    <span class="result-latin-strict latin-strict">
+                        ⟨{{ entry.latin_strict }}⟩:  
                     </span>
+                    {% if entry.latin_phonetic %}
+                    <span class="result-latin-phonetic latin-phonetic">
+                        {{ entry.latin_phonetic }}
+                    </span>
+                    {% endif %}
                 </div>
             <div class="result-definitions">
                 <ul>

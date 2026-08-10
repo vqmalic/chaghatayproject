@@ -6,11 +6,11 @@
 <article class="entry-detail">
     <h2>
         <span class="persoarabic" dir="rtl">{{ entry.persoarabic }} {% if entry.homograph_index %}<sup>{{ entry.homograph_index }}</sup>{% endif %}</span>
-        <span class="latinstrict">({{ entry.latin_strict }})</span>
+        <span class="latin-strict">⟨{{ entry.latin_strict }}⟩</span>
     </h2>
 
     {% if entry.latin_phonetic %}
-    <div class="phonetic">Phonetic Reconstruction: {{ entry.latin_phonetic }}</div>
+    <div class="phonetic">Phonetic Reconstruction: <span class="latin-phonetic">{{ entry.latin_phonetic }}</span></div>
     {% endif %}
     <div>
         <span>Nastaliq: </span><span class="nastaliq">{{ entry.persoarabic }}</span>
