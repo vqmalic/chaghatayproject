@@ -35,7 +35,7 @@
             <li>
             {{ def.definition_text | safe}}
             {% if def.source %}
-                <span class="def-source">({{ def.source.shortname }})</span>
+                <sub class="def-source">{{ def.source.shortname }}</sub>
             {% endif %}
                 {% if def.usageexample_set.all %}
                 <ul>

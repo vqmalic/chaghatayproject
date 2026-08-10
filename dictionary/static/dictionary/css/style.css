@@ -187,3 +187,7 @@ div.resultblock{
     text-decoration: none;
 }
 
+sub.def-source {
+    color: #AAAAAA;
+    font-size: .7rem;
+}
