@@ -144,3 +144,5 @@ dictionary/tmp_initialimport.py
 # tmp csvs
 *.csv
 *.csv#
+
+.env
