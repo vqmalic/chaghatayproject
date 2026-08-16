@@ -147,3 +147,4 @@ dictionary/tmp_initialimport.py
 
 .env
 staticfiles/
+*.sql
