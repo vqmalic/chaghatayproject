@@ -38,6 +38,7 @@ p .persoarabic {
 }
 #search-box.persoarabic {
   direction: ltr;
+  font-family: 'Noto Naskh Arabic', serif;
 }
 .nastaliq {
   font-family: 'Noto Nastaliq Urdu', serif;
