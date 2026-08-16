@@ -10,6 +10,8 @@ model/DB layer) — no uppercase variants are included here.
 """
 
 PA_TO_VLT = {
+    'ٴ': "ʾ",
+    'ٔ': "ʾ",
     'آ': "ā",
     'ا': "a",
     'ب': "b",
@@ -46,6 +48,11 @@ PA_TO_VLT = {
     'گ': "g",
     'ی': "y",
     'ە': "h",
+    'ة': "t",
+    'َ': "a",
+    'ِ': "i",
+    'ٍ': "n",
+    'ً': "n",
 }
 
 DIACRITIC_STRIP_MAP = {

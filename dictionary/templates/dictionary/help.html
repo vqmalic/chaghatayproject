@@ -1,5 +1,230 @@
 {% extends "dictionary/base.html" %}
 {% block content %}
   <h1>User Guide</h1>
-  <p>...</p>
+  <p>When searching in Chaghatay, inputs in both Perso-Arabic script and Latin script are acceptable.</p>
+  <p>Since Perso-Arabic is an abjad, some vowels present in a word as spoken aloud are not represented in written form, while vowels that <em>are</em> present in written forms may correspond to multiple possible sounds.</p>
+  <p>For this reason, when searching with Latin script, the Dictionary accepts both verbatim, character-for-character Romanizations of the written Perso-Arabic word as well as full phonetic reconstructions of the word, should the searcher know what that is. For both verbatim transliterations and phonetic transcriptions diacritics are <strong>optional</strong>, although including them in search may help narrow down results.</p>
+  <p>For example, the word <span class="persoarabic">چمچلاق</span> will be retrieved if the user searches for <strong>čmčlaq</strong> (verbatim), <strong>cmclaq</strong> (verbatim without diacritics), <strong>čimčilaq</strong> (phonetic), or <strong>cimcilaq</strong> (phonetic without diacritics).</p>
+  <p>Romanization of Chaghatay Perso-Arabic still lacks a widely agreed-upon standardization. This dictionary uses the following system:</p>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Perso-Arabic</th>
+        <th scope="col">Latin: Verbatim</th>
+        <th scope="col">Latin: Phonetic</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="persoarabic">آ</span></td>
+        <td>ā</td>
+        <td>ā</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ا</span></td>
+        <td>a</td>
+        <td>a, ä, ā</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ب</span></td>
+        <td>b</td>
+        <td>b</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">پ</span></td>
+        <td>b</td>
+        <td>b</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ت</span></td>
+        <td>t</td>
+        <td>t</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ث</span></td>
+        <td>ş</td>
+        <td>ş</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ج</span></td>
+        <td>j</td>
+        <td>j</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">چ</span></td>
+        <td>č</td>
+        <td>č</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ح</span></td>
+        <td>ḥ</td>
+        <td>ḥ</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">خ</span></td>
+        <td>ḫ</td>
+        <td>ḫ</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">د</span></td>
+        <td>d</td>
+        <td>d</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ذ</span></td>
+        <td>ź</td>
+        <td>ź</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ر</span></td>
+        <td>r</td>
+        <td>r</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ز</span></td>
+        <td>z</td>
+        <td>z</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ژ</span></td>
+        <td>ž</td>
+        <td>ž</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">س</span></td>
+        <td>s</td>
+        <td>s</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ش</span></td>
+        <td>š</td>
+        <td>š</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ص</span></td>
+        <td>ṣ</td>
+        <td>ṣ</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ض</span></td>
+        <td>ż</td>
+        <td>ż</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ط</span></td>
+        <td>ṭ</td>
+        <td>ṭ</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ظ</span></td>
+        <td>ẓ</td>
+        <td>ẓ</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ع</span></td>
+        <td>ʿ</td>
+        <td>ʿ</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">غ</span></td>
+        <td>ǧ</td>
+        <td>ǧ</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ف</span></td>
+        <td>f</td>
+        <td>f, ṗ</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ق</span></td>
+        <td>q</td>
+        <td>q</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ک</span></td>
+        <td>k</td>
+        <td>k</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">گ</span></td>
+        <td>g</td>
+        <td>g</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ل</span></td>
+        <td>l</td>
+        <td>l</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">م</span></td>
+        <td>m</td>
+        <td>m</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ن</span></td>
+        <td>n</td>
+        <td>n</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ه</span></td>
+        <td>h</td>
+        <td>h, a, ä</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ة</span></td>
+        <td>t</td>
+        <td>h, t</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">و</span></td>
+        <td>w</td>
+        <td>w, u, o, ü, ö, ū</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ی</span></td>
+        <td>y</td>
+        <td>y, i, e, ī</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">ٔ</span></td>
+        <td>ʾ</td>
+        <td>ʾ</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">◌ٔ</span></td>
+        <td>ʾ</td>
+        <td>ʾ</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">◌ُ</span></td>
+        <td>u</td>
+        <td>u, o, ü</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">◌ّ</span></td>
+        <td>~</td>
+        <td>doubling the preceding consonant</td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">◌ِ</span></td>
+        <td>i</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">◌َ</span></td>
+        <td>a</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">◌ً</span></td>
+        <td>n</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="persoarabic">◌ً</span></td>
+        <td>n</td>
+        <td></td>
+      </tr>
+    </tbody>
+</table>
 {% endblock %}

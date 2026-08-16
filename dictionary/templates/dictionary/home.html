@@ -6,12 +6,17 @@
 {% block content %}
 <h1 class="home-header">The Chaghatay Dictionary Project</h1>
 <div class="search-container">
-    <input type="text" id="search-box" autocomplete="off" placeholder="Search...">
+    <div class="search-input-wrap">
+        <input type="text" id="search-box" autocomplete="off" placeholder="Search...">
+        <div id="suggestions"></div>
+    </div>
     <div class="search-mode-toggle">
         <label><input type="radio" name="search-mode" value="chag_to_eng" checked> Chaghatay → English</label>
         <label><input type="radio" name="search-mode" value="eng_to_chag"> English → Chaghatay</label>
     </div>
-    <div id="suggestions"></div>
+    <p class="search-hint">
+        Chaghatay → English search accepts Perso-Arabic characters or Latin characters per <a href="{% url 'help' %}">this system for Romanization of Arabic</a>.  When searching in Latin, <strong>diacritics are optional</strong>, but can help narrow search results. Both verbatim and phonetic search are supported.
+    </p>
 </div>
 {% endblock %}
 
