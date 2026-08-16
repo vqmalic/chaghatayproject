@@ -19,6 +19,15 @@ sup {
   font-size: 0.75em;
   line-height: 0;              /* prevents its own box from adding vertical space */
 }
+#search-box {
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 12px 16px;
+    border: 1px solid #ccc;
+    border-radius: 24px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
 .persoarabic {
   font-family: 'Noto Naskh Arabic', serif;
   direction: rtl;
@@ -54,15 +63,6 @@ header {
     position: relative;
     width: 500px;
     margin: 0 auto;
-}
-#search-box {
-    width: 100%;
-    font-size: 1.2rem;
-    padding: 12px 16px;
-    border: 1px solid #ccc;
-    border-radius: 24px;
-    box-sizing: border-box;
-    font-family: inherit;
 }
 #suggestions {
     position: absolute;
