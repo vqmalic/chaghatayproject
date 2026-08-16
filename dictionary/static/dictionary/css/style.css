@@ -27,6 +27,9 @@ sup {
 p .persoarabic {
   font-size: 1em; /* Reset to normal size for inline text */
 }
+#search-box.persoarabic {
+  direction: ltr;
+}
 .nastaliq {
   font-family: 'Noto Nastaliq Urdu', serif;
   font-size: 1.4em;

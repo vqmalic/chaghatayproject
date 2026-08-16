@@ -11,6 +11,10 @@ function getMode() {
     return document.querySelector('input[name="search-mode"]:checked').value;
 }
 
+function isPersoArabic(text) {
+    return /[\u0600-\u06FF]/.test(text);
+}
+
 searchBox.addEventListener('input', () => {
     const query = searchBox.value.trim();
 
@@ -25,6 +29,7 @@ searchBox.addEventListener('input', () => {
     }
 
     debounceTimer = setTimeout(() => {
+        searchBox.classList.toggle('persoarabic', isPersoArabic(query));
         fetchSuggestions(query, getMode());
     }, 180);
 });
